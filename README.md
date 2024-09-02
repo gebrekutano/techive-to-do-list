@@ -60,8 +60,10 @@ The To-Do List App is a simple, user-friendly application designed to help users
 ``git checkout -b feature/user-authentication``
 #### Develop and Commit Changes:
 - Each developer works on their assigned tasks, commits changes, and pushes to GitHub:
-``git add .``
+``git add .`` 
+
 ``git commit -m "Implement user authentication"``
+
 ``git push origin feature/user-authentication``
 #### Create Pull Request:
 After completing their tasks, each developer creates a pull request to merge their feature branch into main.
