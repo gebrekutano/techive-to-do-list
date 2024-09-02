@@ -1,0 +1,45 @@
+services:
+  app:
+    build:
+      args:
+        user: gkk
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: lara-minio
+    container_name: lara-minio
+    restart: unless-stopped
+    working_dir: /home/gkk/laravel-demo/lara-minio
+    volumes:
+      - ./:/home/gkk/laravel-demo/lara-minio
+    networks:
+      - lara-minio-network
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - lara-minio-network
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/home/gkk/laravel-demo/lara-minio
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - lara-minio-network
+networks:
+  lara-minio-network:
+    driver: bridge
